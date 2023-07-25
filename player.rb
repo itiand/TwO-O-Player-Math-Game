@@ -2,11 +2,8 @@ class Player
   attr_accessor :name, :life
 
   def initialize(name)
-    @life = 1
+    @life = 3
     @name =  name
-  end
-
-  def gain_score
   end
 
   def lose_life
