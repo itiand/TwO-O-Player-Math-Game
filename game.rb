@@ -22,7 +22,7 @@ class Game
     @player1 = Player.new(player1_name)
     puts "Welcome #{@player1.name}!"
 
-    puts "....."
+    puts "-----------------------------------"
     puts "Player 2, please enter your name."
     player2_name = gets.chomp
     @player2 = Player.new(player2_name)
@@ -31,7 +31,7 @@ class Game
 
 
   def game_done?
-    @player1.life == 0 || @player2.life == 0
+    [@player1, @player2].any? { |player| player.life == 0 }
   end
 
   def print_score
@@ -50,10 +50,14 @@ class Game
     end
   end
 
+  def winner
+    @player1.life > 0 ? @player1 : @player2
+  end
+
   def start
     puts "Welcome to TwO-O-Player Math Game!"
     house_keeping
-    puts "Let's begin!"
+    puts "And let's begin!"
 
     #loop begins
     while !game_done? do
@@ -64,11 +68,11 @@ class Game
       puts "To #{@current_player}: #{question.question}"
 
     
-      playerAnswer = get_valid_integer_input("Enter your answer: ")
+      player_answer = get_valid_integer_input("Enter your answer: ")
 
       #check if isCorrect
-      isCorrect = question.correct_answer?(playerAnswer)
-      if isCorrect
+      is_correct = question.correct_answer?(player_answer)
+      if is_correct
         puts "YES! You are correct."
       else
         puts "Seriously? No!"
@@ -79,7 +83,11 @@ class Game
   
       #continue or game done?
       if game_done?
-        puts "----- GAME OVER -----\nGood bye!"
+        puts "----- GAME OVER -----"
+        puts "#{winner.name} wins with a score of #{winner.life}/3!"
+        puts "Final score is #{@player1.name}: #{@player1.life}/3 vs #{@player2.name}: #{@player2.life}/3"
+        puts "Good bye!"
+    
       else
         puts "----- NEW TURN -----"
       end  
